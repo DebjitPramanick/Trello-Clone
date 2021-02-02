@@ -11,24 +11,23 @@ const useStyles = makeStyles(theme => ({
     root: {
         width: '300px',
         backgroundColor: '#EBECF0',
-        marginLeft: theme.spacing(1)
+        marginLeft: theme.spacing(1),
+        marginTop: theme.spacing(1)
     }
 }))
 
 
-const List = () => {
+const List = ({list}) => {
     const classes = useStyles();
     return (
         <div>
             <Paper className={classes.root}>
                 <CssBaseline />
-                <Title />
-                <Card/>
-                <Card />
-                <Card />
-                <Card />
-                <Card />
-                <InputConainer/>
+                <Title title={list.title}/>
+                {list.cards.map(card => (
+                    <Card key={card.id} card={card}/>
+                ))}
+                <InputConainer listID={list.id} type={'card'}/>
             </Paper>
         </div>
     )

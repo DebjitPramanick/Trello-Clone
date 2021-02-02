@@ -9,13 +9,13 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-const Card = () => {
+const Card = ({card}) => {
     
     const classes = useStyles()
 
     return (
         <div>
-            <Paper className={classes.card}>This is a card</Paper>
+            <Paper className={classes.card}>{card.title}</Paper>
         </div>
     )
 }
