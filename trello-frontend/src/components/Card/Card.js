@@ -1,22 +1,34 @@
 import React from 'react'
-import { Paper} from "@material-ui/core";
+import { Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const useStyles = makeStyles(theme => ({
     card: {
-        padding: theme.spacing(1,1,1,2),
-        margin: theme.spacing(1)
+        maxWidth: '300px',
+        padding: theme.spacing(1, 1, 1, 2),
+        margin: theme.spacing(1),
+        cursor: 'pointer'
     }
 }))
 
-const Card = ({card}) => {
-    
+const Card = ({ card, index }) => {
+
     const classes = useStyles()
 
     return (
-        <div>
-            <Paper className={classes.card}>{card.title}</Paper>
-        </div>
+        <Draggable draggableId={card.id} index={index}>
+            {(provided) => (
+                <div
+                ref={provided.innerRef} {...provided.dragHandleProps}
+                {...provided.draggableProps}
+                >
+                    <Paper className={classes.card}>{card.title}</Paper>
+                </div>
+            )}
+
+        </Draggable>
     )
 }
 

@@ -6,7 +6,9 @@ import InputCard from './InputCard';
 const useStyles = makeStyles(theme => ({
     root: {
         marginTop: theme.spacing(1),
-        width: '300px'
+        minWidth: '300px',
+        maxWidth: '300px',
+        cursor: 'pointer'
     },
     addCard: {
         padding: theme.spacing(1, 1, 1, 2),

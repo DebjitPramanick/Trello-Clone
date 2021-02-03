@@ -1,19 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Typography, InputBase } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import StoredAPI from "../../utils/StoredAPI";
 
 
 const useStyles = makeStyles(theme => ({
     editableTitleContainer: {
+        maxWidth: '300px',
         display: 'flex',
         marginLeft: theme.spacing(1),
-        alignItems: 'center'
     },
     editableTitle: {
-        flexGrow: '1'
+        flexGrow: '1',
+        maxWidth: '300px',
     },
     input: {
+        maxWidth: '300px',
         margin: theme.spacing(1),
         "&:focus": {
             backgroundColor: '#ddd'
@@ -22,27 +25,37 @@ const useStyles = makeStyles(theme => ({
 }))
 
 
-const Title = ({title}) => {
+const Title = ({title, listID}) => {
     const [open, setOpen] = useState(false);
     const classes = useStyles();
+
+    const {updateListTitle} = useContext(StoredAPI);
+
+    const [newTitle, setNewTitle] = useState(title)
+
+    const handleOnBlur = () =>{
+        updateListTitle(newTitle, listID)
+        setOpen(!open);
+    }
 
     return (
         <div>
             {open ? (
                 <div>
-                    <InputBase value={title}
+                    <InputBase value={newTitle}
                     autoFocus
                     inputProps ={{
                         className: classes.input
                     }}
                     fullWidth
-                    onBlur = {()=>setOpen(!open)} />
+                    onChange={(e) => setNewTitle(e.target.value)}
+                    onBlur = {handleOnBlur} />
                 </div>
             ) : (
                     <div className={classes.editableTitleContainer}>
 
                         <Typography className={classes.editableTitle}
-                        onClick={() => setOpen(!open)}>{title}</Typography>
+                        onClick={() => setOpen(!open)}>{newTitle}</Typography>
 
                         <MoreHorizIcon />
                     </div>

@@ -17,7 +17,8 @@ const useStyles = makeStyles(theme => ({
         color: '#fff',
         '&:hover': {
             backgroundColor: '#0C2D48'
-        }
+        },
+        cursor: 'pointer'
     },
     confirm: {
         margin: theme.spacing(0, 1, 1, 1)
@@ -29,14 +30,26 @@ const InputCard = ({ setOpen, listID, type }) => {
 
     const classes = useStyles();
     const [title, setTitle] = useState();
-    const { addMoreCard } = useContext(StoredAPI)
+    const { addMoreCard, addMoreList } = useContext(StoredAPI)
 
-    const confirmAdd = () => {
+    const confirmAddCard = () => {
+        if(title){
+            addMoreCard(title, listID);
+            setOpen(false)
+            setTitle('')
+        }
+    }
 
-        addMoreCard(title, listID);
 
-        setOpen(false)
-        setTitle('')
+
+    const confirmAddList = () => {
+
+        if(title){
+            addMoreList(title);
+            setOpen(false)
+            setTitle('')
+        }
+        
     }
 
 
@@ -60,10 +73,20 @@ const InputCard = ({ setOpen, listID, type }) => {
 
 
             <div className={classes.confirm}>
-                <Button className={classes.btnConfirm}
-                    onClick={confirmAdd}>
-                    {type === 'card' ? 'Add Card' : 'Add List'}
-                </Button>
+
+                {type === 'card' ? (
+                    <Button className={classes.btnConfirm}
+                        onClick={confirmAddCard}>
+                        Add Card
+                    </Button>
+                ) : (
+                        <Button className={classes.btnConfirm}
+                            onClick={confirmAddList}>
+                            Add List
+                        </Button>
+                    )}
+
+
                 <IconButton>
                     <ClearIcon onClick={() => setOpen(false)} />
                 </IconButton>
