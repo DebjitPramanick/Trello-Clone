@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         maxWidth: '100vw',
         overflowX: 'scroll',
-        minHeight: 'inherit'
+        minHeight: 'inherit',
     },
     listbg: {
         width: '300px',

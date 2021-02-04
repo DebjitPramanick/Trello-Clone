@@ -1,7 +1,7 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 import { Paper, CssBaseline } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles,fade } from "@material-ui/core/styles";
 import Title from './Title';
 import Card from '../Card/Card';
 import InputConainer from '../Input/InputConainer';
@@ -14,16 +14,22 @@ const useStyles = makeStyles(theme => ({
         minWidth: '300px',
         backgroundColor: '#EBECF0',
         marginLeft: theme.spacing(1),
-        marginTop: theme.spacing(1)
+        marginTop: theme.spacing(1),
+        paddingTop: theme.spacing(1),
+        
     },
     cardContainer: {
         marginTop: theme.spacing(4)
-    }
+    },
+    
 }))
 
 
 const List = ({ list, index }) => {
     const classes = useStyles();
+
+
+
     return (
 
         <Draggable draggableId={list.id} index={index}>
@@ -46,7 +52,7 @@ const List = ({ list, index }) => {
                                 >
                                     {
                                         list.cards && list.cards.map((card, index) => (
-                                            <Card key={card.id} card={card} index={index} />
+                                            <Card key={card.id} card={card} index={index}/>
                                         ))
                                     }
                                     {provided.placeholder}
@@ -63,6 +69,7 @@ const List = ({ list, index }) => {
 
 
         </Draggable>
+        
     )
 }
 
