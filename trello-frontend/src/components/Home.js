@@ -6,18 +6,15 @@ import { v4 as uuid } from 'uuid'
 import InputConainer from './Input/InputConainer'
 import { makeStyles } from "@material-ui/core/styles";
 
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable} from "react-beautiful-dnd";
 
 
 const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex',
-        minHeight: '100vh',
         maxWidth: '100vw',
-        backgroundImage: "url(https://i.pinimg.com/originals/47/0a/19/470a19a36904fe200610cc1f41eb00d9.jpg)",
-        backgroundPosition: "center",
-        backgroundSize: "cover",
-        overflowX: 'scroll'
+        overflowX: 'scroll',
+        minHeight: 'inherit'
     },
     listbg: {
         width: '300px',
@@ -152,7 +149,6 @@ const Home = () => {
     return (
 
         <StoredApi.Provider value={{ addMoreCard, addMoreList, updateListTitle }}>
-
             <DragDropContext onDragEnd={onDragEnd}>
 
                 <Droppable droppableId='list' type='list' direction='horizontal'>
