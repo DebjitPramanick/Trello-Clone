@@ -12,7 +12,13 @@ const useStyles = makeStyles(theme => ({
     },
     btn: {
         color: 'white',
-        backgroundColor: 'grey'
+        backgroundColor: '#145DA0',
+        color: '#fff',
+        '&:hover': {
+            backgroundColor: '#0C2D48'
+        },
+        cursor: 'pointer',
+        border: '1px solid white'
     }
 }))
 
