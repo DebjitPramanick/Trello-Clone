@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Drawer, IconButton } from '@material-ui/core'
 import { makeStyles } from "@material-ui/core/styles";
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 
 import colors from '../../utils/Colors';
 import { getImages } from '../../utils/ImageApi';
+
+import StoredApi from '../../utils/StoredAPI'
 
 const useStyles = makeStyles(theme => ({
     drawer: {
@@ -35,13 +37,12 @@ const useStyles = makeStyles(theme => ({
 }))
 
 
-const Sidebar = ({ openMenu, setOpenMenu, setBgImage }) => {
+const Sidebar = ({ openMenu, setOpenMenu }) => {
 
     const classes = useStyles();
-
-    const [openColorOptions, setOpenColorOptions] = useState(false);
-
     const [images, setImages] = useState([]);
+
+    const { changeBG } = useContext(StoredApi)
 
     const getImageList = async () => {
         const imageList = await getImages();
@@ -53,7 +54,9 @@ const Sidebar = ({ openMenu, setOpenMenu, setBgImage }) => {
     }, [])
 
 
-    console.log(images)
+    const sendBG = (bg) => {
+        changeBG(bg);
+    }
 
 
     return (
@@ -74,6 +77,7 @@ const Sidebar = ({ openMenu, setOpenMenu, setBgImage }) => {
                                 style={{
                                     backgroundColor: `${color}`
                                 }}
+                                onClick={() => sendBG(color)}
                             ></div>
                         ))}
                     </div>
@@ -90,7 +94,7 @@ const Sidebar = ({ openMenu, setOpenMenu, setBgImage }) => {
                                     backgroundRepeat: 'no-repeat',
                                     backgroundSize: 'cover'
                                 }}
-                                onClick={() => setBgImage(image.url)}
+                                onClick={() => sendBG(image.url)}
                             ></div>
                         ))}
                     </div>

@@ -2,14 +2,14 @@ import React,{useState} from 'react'
 import Sidebar from './Sidebar'
 import Topbar from './Topbar'
 
-const Navbars = ({setBgImage}) => {
+const Navbars = () => {
 
     const [openMenu, setOpenMenu] = useState(false)
 
     return (
         <div>
             <Topbar setOpenMenu={setOpenMenu}/>
-            <Sidebar openMenu={openMenu} setOpenMenu={setOpenMenu} setBgImage={setBgImage}/>
+            <Sidebar openMenu={openMenu} setOpenMenu={setOpenMenu}/>
         </div>
     )
 }
