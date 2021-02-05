@@ -29,6 +29,8 @@ const List = ({ list, index }) => {
     const classes = useStyles();
 
 
+    const local_list = JSON.parse(localStorage.getItem('lists')).lists
+
 
     return (
 

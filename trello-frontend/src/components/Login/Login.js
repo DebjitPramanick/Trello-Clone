@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { makeStyles, fade } from "@material-ui/core/styles";
 import { Button, IconButton } from "@material-ui/core";
-import {auth,provider} from "../../utils/Firebase"
-
+import { auth, provider, firebaseDB } from "../../utils/Firebase"
 
 import { useStateValue } from '../../utils/Redux/StateProvider'
 import { actionTypes } from '../../utils/Redux/Reducer'
@@ -30,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     btn: {
         backgroundColor: '#007FFF',
         color: 'white',
-        padding: theme.spacing(1,1,1,1),
+        padding: theme.spacing(1, 1, 1, 1),
         marginTop: theme.spacing(4),
         '&:hover': {
             backgroundColor: "#0D4F8B"
@@ -45,37 +44,39 @@ const useStyles = makeStyles(theme => ({
 
 
 
-const Login = ({setUser}) => {
+const Login = ({ setUser }) => {
 
 
-    const [{} , dispatch] = useStateValue();
+    const [{ }, dispatch] = useStateValue();
     const classes = useStyles();
+
+    const ref = firebaseDB.child('users')
+
 
     const signIn = () => {
         auth.signInWithPopup(provider)
             .then(res => {
+                const data = {
+                    name: res.user.displayName,
+                    email: res.user.email,
+                }
                 dispatch({
                     type: actionTypes.SET_USER,
                     user: res.user,
                 })
                 setUser(true);
-                
             })
-            .catch((error) => {
-                alert(error.message);
-            })
-            
-        
+            .catch((error) => alert(error.message))
     }
 
     return (
         <div className={classes.root}>
             <div className={classes.loginBox}>
                 <img src="https://cdn1.iconfinder.com/data/icons/designer-skills/128/trello-512.png" alt=""
-                className={classes.image}/>
+                    className={classes.image} />
                 Welcome to Trello clone
                 <Button className={classes.btn}
-                onClick={signIn}>
+                    onClick={signIn}>
                     Signin with Google
                 </Button>
             </div>

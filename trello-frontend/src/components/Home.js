@@ -6,6 +6,8 @@ import { v4 as uuid } from 'uuid'
 import InputConainer from './Input/InputConainer'
 import { makeStyles } from "@material-ui/core/styles";
 
+import { firebaseDB } from "../utils/Firebase"
+
 import { DragDropContext, Droppable} from "react-beautiful-dnd";
 
 
@@ -14,8 +16,8 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         maxWidth: '100vw',
         overflowX: 'scroll',
-        minHeight: 'inherit',
-    },
+        height: '100vh'
+        },
     listbg: {
         width: '300px',
         backgroundColor: '#EBECF0',
@@ -29,14 +31,16 @@ const useStyles = makeStyles(theme => ({
 const Home = () => {
 
     const classes = useStyles();
-
     const [data, setData] = useState(store);
-
+    
 
     const addMoreCard = (title, listId) => {
         const newCardId = uuid();
+        const date = new Date();
+        
         const newCard = {
             id: newCardId,
+            date: `${date.getDate()} ${date.toLocaleString('default', { month: 'short' })}, ${date.getFullYear()}`,
             title: title,
         }
 
@@ -50,7 +54,7 @@ const Home = () => {
                 [listId]: list,
             },
         }
-
+        
         setData(newState)
     }
 

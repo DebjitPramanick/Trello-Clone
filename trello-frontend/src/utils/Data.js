@@ -2,14 +2,17 @@
 const cards = [
     {
         id: 'card-1',
+        date: '29 Jan, 2021',
         title: 'Learning how to cook',
     },
     {
         id: 'card-2',
+        date: '14 Jan, 2021',
         title: 'Making sandwich',
     },
     {
         id: 'card-3',
+        date: '24 Jan, 2021',
         title: 'Taking the trash out',
     },
 ];

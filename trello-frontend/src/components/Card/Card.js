@@ -64,6 +64,7 @@ const Card = ({ card, index }) => {
                     <div className={classes.popup}>
                         <CancelIcon className={classes.cancel} onClick={() => setPopup(false)}/>
                         <h1>{card.title}</h1>
+                        <p>Card added - {card.date}</p>
                     </div>
                 </div>
 

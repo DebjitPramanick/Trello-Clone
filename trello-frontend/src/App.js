@@ -10,10 +10,12 @@ import Login from './components/Login/Login';
 
 const useStyles = makeStyles(theme => ({
     root: {
-        minHeight: '100vh',
+        height: '100vh',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover'
+        backgroundSize: 'cover',
+        display: 'flex',
+        flexDirection: "column"
     },
 }))
 
@@ -28,7 +30,7 @@ const App = () => {
 
     const classes = useStyles();
 
-    const [bg, setBg] = useState('https://i.pinimg.com/originals/47/0a/19/470a19a36904fe200610cc1f41eb00d9.jpg');
+    const [bg, setBg] = useState(background);
     const [loader, setLoader] = useState(false);
 
 
