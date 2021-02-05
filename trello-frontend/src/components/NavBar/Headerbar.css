@@ -1,0 +1,35 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.headerContainer{
+    background-color: rgba(0, 0, 0, 0.452);
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.display{
+    display: flex;
+    align-items: center;
+    column-gap: 20px;
+    color: white;
+}
+
+.display img{
+    width: 40px;
+    height: 40px;
+}
+
+.btn-container{
+    display: flex;
+    align-items: center;
+    column-gap: 20px;
+}
+
+.btn-container .MuiSvgIcon-root{
+    font-size: 20px;
+    margin-right: 10px;
+}

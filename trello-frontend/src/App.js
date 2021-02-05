@@ -2,28 +2,29 @@ import React, { useState } from 'react'
 import Home from './components/Home'
 import { makeStyles, fade } from "@material-ui/core/styles";
 import Navbars from './components/NavBar/Navbars';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 import StoredApi from './utils/StoredAPI'
+import Loader from './components/Loader/Loader';
+import Login from './components/Login/Login';
 
 const useStyles = makeStyles(theme => ({
     root: {
         minHeight: '100vh',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover'
     },
-    loader: {
-        width: '100vw',
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'fixed',
-        backgroundColor: fade('#000',0.86)
-    }
 }))
 
 
 const App = () => {
+
+    const trelloUser = JSON.parse(localStorage.getItem('trelloUser'));
+    const background = JSON.parse(localStorage.getItem('background'));
+
+    const [user, setUser] = useState(trelloUser)
+
 
     const classes = useStyles();
 
@@ -37,42 +38,43 @@ const App = () => {
         setBg(url);
         setTimeout(() => {
             setLoader(false)
-        },3000)
-        
+        }, 3000)
+
+        localStorage.setItem('background',JSON.stringify(url))
+
     }
 
 
     return (
-        <StoredApi.Provider value={{ changeBG }}>
-            {loader && (
-                <div className={classes.loader}>
-                    <div style={{
-                        width: '200px',
-                        height: '200px',
-                        borderRadius: '10px',
-                        backgroundColor: 'white',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}>
-                        <CircularProgress />
-                    </div>
-                    
-                </div>
+
+
+        <div>
+
+            {!user ? <Login setUser={setUser}/>
+            : (
+                    <StoredApi.Provider value={{ changeBG }}>
+
+
+                        {loader && <Loader />}
+
+                        <div className={classes.root}
+                            style={{
+                                backgroundColor: `${bg}`,
+                                backgroundImage: `url(${bg})`,
+                            }}
+                        >
+                            <Navbars />
+                            <Home />
+                        </div>
+                    </StoredApi.Provider>
             )}
-            <div className={classes.root}
-                style={{
-                    backgroundColor: `${bg}`,
-                    backgroundImage: `url(${bg})`,
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundSize: 'cover'
-                }}
-            >
-                <Navbars />
-                <Home />
-            </div>
-        </StoredApi.Provider>
+
+
+
+            
+
+
+        </div>
     )
 }
 

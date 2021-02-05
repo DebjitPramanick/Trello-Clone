@@ -1,6 +1,6 @@
 import React,{useState} from 'react'
+import Headerbar from './Headerbar'
 import Sidebar from './Sidebar'
-import Topbar from './Topbar'
 
 const Navbars = () => {
 
@@ -8,7 +8,7 @@ const Navbars = () => {
 
     return (
         <div>
-            <Topbar setOpenMenu={setOpenMenu}/>
+            <Headerbar setOpenMenu={setOpenMenu}/>
             <Sidebar openMenu={openMenu} setOpenMenu={setOpenMenu}/>
         </div>
     )

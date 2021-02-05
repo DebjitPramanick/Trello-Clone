@@ -32,7 +32,8 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
-        rowGap: '20px'
+        rowGap: '20px',
+        marginBottom: theme.spacing(4)
     }
 }))
 
@@ -58,6 +59,7 @@ const Sidebar = ({ openMenu, setOpenMenu }) => {
         changeBG(bg);
     }
 
+    const defaultUrl = "https://i.pinimg.com/originals/47/0a/19/470a19a36904fe200610cc1f41eb00d9.jpg"
 
     return (
         <div>
@@ -85,6 +87,16 @@ const Sidebar = ({ openMenu, setOpenMenu }) => {
                     <h4 style={{ color: 'grey' }}>Choose Image Background</h4>
 
                     <div className={classes.menu}>
+
+                        <div className={classes.box}
+                            style={{
+                                backgroundImage: `url(${defaultUrl})`,
+                                backgroundPosition: 'center',
+                                backgroundRepeat: 'no-repeat',
+                                backgroundSize: 'cover'
+                            }}
+                            onClick={() => sendBG(defaultUrl)}
+                        ></div>
 
                         {images.map(image => (
                             <div className={classes.box}

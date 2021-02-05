@@ -20,6 +20,8 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         position: 'fixed',
         top: '0',
+        right: '0',
+        left: '0',
         backgroundColor: fade('#000', 0.86),
     },
     popup: {
