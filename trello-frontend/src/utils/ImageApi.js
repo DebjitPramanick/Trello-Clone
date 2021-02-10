@@ -7,8 +7,6 @@ const getImages = async() => {
 
     const imageUrl = config.url + `search/photos?page=${page}&query=Landscape&client_id=${config.clientKey}`;
 
-    console.log(imageUrl)
-
     const res = await axios.get(imageUrl);
 
     const photos = res.data.results.map(img => ({

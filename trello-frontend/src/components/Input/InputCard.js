@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 
-const InputCard = ({ setOpen, listID, type }) => {
+const InputCard = ({ setOpen, listID, index, type }) => {
 
     const classes = useStyles();
     const [title, setTitle] = useState();
@@ -34,7 +34,7 @@ const InputCard = ({ setOpen, listID, type }) => {
 
     const confirmAddCard = () => {
         if(title){
-            addMoreCard(title, listID);
+            addMoreCard(title, index);
             setOpen(false)
             setTitle('')
         }

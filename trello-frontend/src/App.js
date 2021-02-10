@@ -35,7 +35,6 @@ const App = () => {
 
 
     const changeBG = (url) => {
-        console.log(url)
         setLoader(true);
         setBg(url);
         setTimeout(() => {

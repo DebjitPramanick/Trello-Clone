@@ -100,6 +100,7 @@ const Sidebar = ({ openMenu, setOpenMenu }) => {
 
                         {images.map(image => (
                             <div className={classes.box}
+                                key={image.id}
                                 style={{
                                     backgroundImage: `url(${image.thumb})`,
                                     backgroundPosition: 'center',

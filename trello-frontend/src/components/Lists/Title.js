@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 
-const Title = ({title, listID}) => {
+const Title = ({title, index}) => {
     const [open, setOpen] = useState(false);
     const classes = useStyles();
 
@@ -34,7 +34,7 @@ const Title = ({title, listID}) => {
     const [newTitle, setNewTitle] = useState(title)
 
     const handleOnBlur = () =>{
-        updateListTitle(newTitle, listID)
+        updateListTitle(newTitle, index)
         setOpen(!open);
     }
 

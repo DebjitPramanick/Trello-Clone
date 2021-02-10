@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 
-const InputConainer = ({listID, type}) => {
+const InputConainer = ({listID, index, type}) => {
 
     const classes = useStyles();
     const [open, setOpen] = useState(false);
@@ -29,7 +29,7 @@ const InputConainer = ({listID, type}) => {
     return (
         <div className={classes.root}>
             <Collapse in={open}>
-                <InputCard setOpen={setOpen} listID={listID} type={type}/>
+                <InputCard setOpen={setOpen} listID={listID} index={index} type={type}/>
             </Collapse>
 
             <Collapse in={!open}>

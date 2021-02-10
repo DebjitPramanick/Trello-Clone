@@ -24,9 +24,56 @@ const data = {
             title: 'Todo',
             cards,
         },
-        
     },
     listIds: ['list_1'],
 };
+
+const data1 = {
+    "name": "Debjit Pramanick",
+    "email": "debjitpramanick1@gmail.com",
+    "lists": [
+        {
+            "title": "Sample List 1",
+            "cards": [
+                {
+                    "title": "Coding",
+                    "content": "I have to learn coding tommorow.",
+                    "dateAdded": "10 Feb, 2021"
+                },
+                {
+                    "title": "Study",
+                    "content": "I have to study a lot today.",
+                    "dateAdded": "9 Feb, 2021"
+                },
+                {
+                    "title": "Eating",
+                    "content": "I have to wat at 12 PM.",
+                    "dateAdded": "10 Feb, 2021"
+                },
+                {
+                    "title": "Meeting",
+                    "content": "I have a meeting at 5 PM.",
+                    "dateAdded": "11 Feb, 2021"
+                },
+            ],
+        },
+
+        {
+            "title": "Sample List 2",
+            "cards": [
+                {
+                    "title": "Coding",
+                    "content": "I have to learn coding tommorow.",
+                    "dateAdded": "10 Feb, 2021"
+                },
+                {
+                    "title": "Meeting",
+                    "content": "I have a meeting at 5 PM.",
+                    "dateAdded": "11 Feb, 2021"
+                },
+            ],
+        },
+    ],
+}
 
 export default data;

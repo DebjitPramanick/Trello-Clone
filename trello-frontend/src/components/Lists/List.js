@@ -30,7 +30,7 @@ const List = ({ list, index }) => {
 
     return (
 
-        <Draggable draggableId={list.id} index={index}>
+        <Draggable draggableId={list._id} index={index}>
 
             {(provided) => (
                 <div
@@ -39,10 +39,10 @@ const List = ({ list, index }) => {
                 >
                     <Paper className={classes.root}>
                         <CssBaseline />
-                        <Title title={list.title} listID={list.id} />
+                        <Title title={list.title} index={index} />
 
 
-                        <Droppable droppableId={list.id}>
+                        <Droppable droppableId={list._id}>
                             {(provided) => (
                                 <div
                                     ref={provided.innerRef} {...provided.droppableProps}
@@ -50,7 +50,7 @@ const List = ({ list, index }) => {
                                 >
                                     {
                                         list.cards && list.cards.map((card, index) => (
-                                            <Card key={card.id} card={card} index={index}/>
+                                            <Card key={card._id} card={card} index={index}/>
                                         ))
                                     }
                                     {provided.placeholder}
@@ -60,7 +60,7 @@ const List = ({ list, index }) => {
                         </Droppable>
 
 
-                        <InputConainer listID={list.id} type={'card'} />
+                        <InputConainer listID={list._id} index={index} type={'card'} />
                     </Paper>
                 </div>
             )}

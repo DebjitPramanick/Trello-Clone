@@ -1,6 +1,5 @@
 
 const user = JSON.parse(localStorage.getItem('trelloUser'));
-console.log(user)
 
 export const initialState = {
     user: user,

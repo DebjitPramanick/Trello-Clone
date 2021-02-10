@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import List from "../components/Lists/List"
 import store from "../utils/Data"
 import StoredApi from "../utils/StoredAPI"
@@ -6,7 +6,7 @@ import { v4 as uuid } from 'uuid'
 import InputConainer from './Input/InputConainer'
 import { makeStyles } from "@material-ui/core/styles";
 
-import { firebaseDB } from "../utils/Firebase"
+import axios from "../utils/Axios"
 
 import { DragDropContext, Droppable} from "react-beautiful-dnd";
 
@@ -31,10 +31,32 @@ const useStyles = makeStyles(theme => ({
 const Home = () => {
 
     const classes = useStyles();
-    const [data, setData] = useState(store);
+    const [data, setData] = useState({});
+    const [lists, setLists] = useState([])
+    const [listIDs, setListIDs] = useState([])
+
+    const [sample, setSample] = useState([])
+
+    useEffect(()=>{
+        axios.get('/users')
+        .then(res => {
+            setData(res.data[0])
+        })
+    },[])
+
+    useEffect(() => {
+        axios.get('/users')
+            .then(res => {
+                setLists(res.data[0].lists)
+            })
+    }, [])
+
+
+
     
 
-    const addMoreCard = (title, listId) => {
+    const addMoreCard = (title, index) => {
+
         const newCardId = uuid();
         const date = new Date();
         
@@ -44,34 +66,23 @@ const Home = () => {
             title: title,
         }
 
-        const list = data.lists[listId];
-        list.cards = [...list.cards, newCard]
+        const reqList = lists[index];
+        reqList.cards = [...reqList.cards, newCard]
 
-        const newState = {
-            ...data,
-            lists: {
-                ...data.lists,
-                [listId]: list,
-            },
+        const modList = {
+            ...reqList,
+            cards: reqList.cards
         }
-        
-        setData(newState)
+
+        let allLists = [...lists];
+        allLists[index] = modList;
+        setLists(allLists)
     }
 
 
-    const updateListTitle = (title, listID) => {
-        const list = data.lists[listID];
+    const updateListTitle = (title, index) => {
+        const list = lists[index];
         list.title = title;
-
-        const newState = {
-            ...data,
-            lists: {
-                ...data.lists,
-                [listID]: list,
-            },
-        }
-
-        setData(newState)
     }
 
 
@@ -83,18 +94,9 @@ const Home = () => {
             cards: []
         }
 
-        const newState = {
-            listIds: [
-                ...data.listIds,
-                newListId
-            ],
-            lists: {
-                ...data.lists,
-                [newListId]: newList
-            }
-        }
+        // List is an array
 
-        setData(newState)
+        setLists(list => [...list,newList])
     }
 
     const onDragEnd = (result) => {
@@ -104,50 +106,50 @@ const Home = () => {
             return;
         }
 
-        if(type === 'list') {
-            const newListIds = data.listIds;
-            newListIds.splice(source.index,1);
-            newListIds.splice(destination.index,0, draggableId);
-            return;
-        }
+        // if(type === 'list') {
+        //     const newListIds = data.listIds;
+        //     newListIds.splice(source.index,1);
+        //     newListIds.splice(destination.index,0, draggableId);
+        //     return;
+        // }
 
-        const sourceList = data.lists[source.droppableId];
-        const destinationList = data.lists[destination.droppableId];
-        const draggingCard = sourceList.cards.filter(
-            (card) => card.id === draggableId
-        )[0]
+        // const sourceList = data.lists[source.droppableId];
+        // const destinationList = data.lists[destination.droppableId];
+        // const draggingCard = sourceList.cards.filter(
+        //     (card) => card.id === draggableId
+        // )[0]
 
-        if (source.droppableId === destination.droppableId) {
-            sourceList.cards.splice(source.index, 1);
-            destinationList.cards.splice(destination.index, 0, draggingCard);
+        // if (source.droppableId === destination.droppableId) {
+        //     sourceList.cards.splice(source.index, 1);
+        //     destinationList.cards.splice(destination.index, 0, draggingCard);
 
-            const newState = {
-                ...data,
-                lists: {
-                    ...data.lists,
-                    [sourceList.id]: destinationList
-                }
-            }
+        //     const newState = {
+        //         ...data,
+        //         lists: {
+        //             ...data.lists,
+        //             [sourceList.id]: destinationList
+        //         }
+        //     }
 
-            setData(newState);
-        }
+        //     setLists(newState);
+        // }
 
-        else {
-            sourceList.cards.splice(source.index, 1);
-            destinationList.cards.splice(destinationList.index, 0, draggingCard);
+        // else {
+        //     sourceList.cards.splice(source.index, 1);
+        //     destinationList.cards.splice(destinationList.index, 0, draggingCard);
 
-            const newState = {
-                ...data,
-                lists: {
-                    ...data.lists,
-                    [sourceList.id]: sourceList,
-                    [destinationList.id]: destinationList,
-                }
-            }
+        //     const newState = {
+        //         ...data,
+        //         lists: {
+        //             ...data.lists,
+        //             [sourceList.id]: sourceList,
+        //             [destinationList.id]: destinationList,
+        //         }
+        //     }
 
-            setData(newState)
+        //     setLists(newState)
 
-        }
+        // }
     }
 
     return (
@@ -163,9 +165,8 @@ const Home = () => {
                             ref={provided.innerRef} {...provided.droppableProps}
                         >
 
-                            {data.listIds.map((id,index) => {
-                                const list = data.lists[id]
-                                return <List list={list} key={id} index={index}/>
+                            {lists && lists.map((list,index) => {
+                                return <List list={list} key={list._id} index={index}/>
                             })}
 
                             <InputConainer type={'list'} />

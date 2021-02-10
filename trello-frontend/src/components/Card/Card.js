@@ -64,13 +64,13 @@ const Card = ({ card, index }) => {
                     <div className={classes.popup}>
                         <CancelIcon className={classes.cancel} onClick={() => setPopup(false)}/>
                         <h1>{card.title}</h1>
-                        <p>Card added - {card.date}</p>
+                        <p>Card added - {card.dateAdded}</p>
                     </div>
                 </div>
 
             )}
 
-            <Draggable draggableId={card.id} index={index}>
+            <Draggable draggableId={card._id} index={index}>
                 {(provided) => (
                     <div
                         ref={provided.innerRef} {...provided.dragHandleProps}

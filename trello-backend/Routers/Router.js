@@ -11,6 +11,7 @@ router.post(
         const data = {
             name: req.body.name,
             email: req.body.email,
+            lists: req.body.lists
         }
         const user = new UserModel(data);
         try {
@@ -54,6 +55,19 @@ router.get(
         UserModel.find({}, (error, result) => {
             if (error) res.send(error)
             else res.send(result)
+        })
+    }
+)
+
+
+router.get(
+    '/users/:email',
+    async (req, res) => {
+
+        const email = req.params.email;
+
+        UserModel.find({email}, (error, result) => {
+            if (!error) res.send(result[0])
         })
     }
 )

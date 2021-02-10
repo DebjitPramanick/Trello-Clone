@@ -14,7 +14,6 @@ const UserSchema = new mongoose.Schema({
             ],
         },
     ],
-    listIds: [{type: mongoose.Types.ObjectId}],
 })
 
 const UserModel = mongoose.model("userModel",UserSchema);
