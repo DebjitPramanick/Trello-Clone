@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, IconButton } from "@material-ui/core";
 import { auth, provider } from "../../utils/Firebase"
@@ -50,49 +50,37 @@ const Login = ({ setUser }) => {
 
     const [{ }, dispatch] = useStateValue();
     const classes = useStyles();
-    const [tocheck, setTocheck] = useState('')
-    const [userData, setUserData] = useState({});
-
-    const checkMail = (email) => {
-        // setTocheck(email);
-
-        axios.get(`/users/${email}`)
-            .then(res => {
-                if (res.data) {
-                    return true;
-                }
-            })
-
-        return false
-        
-    }
-
-    // useEffect(()=>{
-        
-    // },[tocheck])
-
-
-
 
     const signIn = () => {
         auth.signInWithPopup(provider)
             .then(res => {
 
                 let email = res.user.email;
-                if(checkMail(email)) console.log("Mail is registered.")
-                else console.log("Mail is not registered.")
 
-                // // const data = {
-                // //     name: res.user.displayName,
-                // //     email: res.user.email,
-                // //     lists: []
-                // // }
-                // dispatch({
-                //     type: actionTypes.SET_USER,
-                //     user: res.user,
-                // })
-                // setUser(true);
-                // axios.post("/upload/user", data)
+                axios.get(`/users/${email}`)
+                    .then(response => {
+                        if(email === response.data.email){
+                            dispatch({
+                                type: actionTypes.SET_USER,
+                                user: res.user,
+                            })
+                            setUser(true);
+                        }
+                        else{
+                            const data = {
+                                name: res.user.displayName,
+                                email: res.user.email,
+                                lists: []
+                            }
+
+                            dispatch({
+                                type: actionTypes.SET_USER,
+                                user: res.user,
+                            })
+                            setUser(true);
+                            axios.post("/upload/user", data)
+                        }
+                    })
             })
             .catch((error) => alert(error.message))
     }
