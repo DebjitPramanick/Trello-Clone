@@ -7,6 +7,7 @@ import Navbars from './components/NavBar/Navbars';
 import StoredApi from './utils/StoredAPI'
 import Loader from './components/Loader/Loader';
 import Login from './components/Login/Login';
+import axios from "./utils/Axios";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -41,7 +42,9 @@ const App = () => {
             setLoader(false)
         }, 3000)
 
-        localStorage.setItem('background',JSON.stringify(url))
+        const data ={background: url}
+
+        axios.put(`/upload/bg/:id`,data)
 
     }
 

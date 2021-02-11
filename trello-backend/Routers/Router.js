@@ -23,24 +23,59 @@ router.post(
     }
 )
 
-router.post(
+router.put(
     '/upload/list/:id',
     async (req, res) => {
-        
+        const data = {
+            lists: req.body.lists
+        }
+        const id = req.params.id;
+        try {
+            await UserModel.findByIdAndUpdate(id, data, (err, updatedData) => {
+                if (!err) res.send(`Updated list.`)
+                else console.log(err)
+            })
+        } catch (error) {
+            console.log(error)
+        }
     }
 )
 
-router.post(
+router.put(
     '/upload/card/:id',
     async (req, res) => {
-
+        const data ={
+            lists: req.body.lists
+        }
+        const id = req.params.id;
+        try {
+            await UserModel.findByIdAndUpdate(id, data, (err, updatedData) => {
+                if (!err) res.send(`Updated lists and cards.`)
+                else console.log(err)
+            })
+        } catch (error) {
+            console.log(error)
+        }
     }
 )
 
-router.post(
+
+
+router.put(
     '/upload/bg/:id',
     async (req, res) => {
-
+        const data ={
+            background: req.body.background
+        }
+        const id = req.params.id;
+        try {
+            await UserModel.findByIdAndUpdate(id, data, (err, updatedData) => {
+                if (!err) res.send(`Updated background.`)
+                else console.log(err)
+            })
+        } catch (error) {
+            console.log(error)
+        }
     }
 )
 
@@ -68,6 +103,19 @@ router.get(
 
         UserModel.find({email}, (error, result) => {
             if (!error) res.send(result[0])
+        })
+    }
+)
+
+
+router.get(
+    '/users/lists/:email',
+    async (req, res) => {
+
+        const email = req.params.email;
+
+        UserModel.find({ email }, (error, result) => {
+            if (!error) res.send(result[0].lists)
         })
     }
 )

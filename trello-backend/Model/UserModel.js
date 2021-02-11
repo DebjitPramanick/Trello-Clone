@@ -1,8 +1,8 @@
 import mongoose from 'mongoose'
 
 const UserSchema = new mongoose.Schema({
-    name: {type: String, required: true},
-    email: {type: String, required: true},
+    name: {type: String,},
+    email: {type: String,},
     lists: [
         {
             title: {type: String},
@@ -14,6 +14,7 @@ const UserSchema = new mongoose.Schema({
             ],
         },
     ],
+    background: {type: String}
 })
 
 const UserModel = mongoose.model("userModel",UserSchema);

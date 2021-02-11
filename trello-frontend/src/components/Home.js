@@ -31,29 +31,30 @@ const useStyles = makeStyles(theme => ({
 const Home = () => {
 
     const classes = useStyles();
-    const [data, setData] = useState({});
+    const [user, setUser] = useState({});
     const [lists, setLists] = useState([])
     const [listIDs, setListIDs] = useState([])
 
-    const [sample, setSample] = useState([])
+    const email = JSON.parse(localStorage.getItem('trelloUser')).email;
 
     useEffect(()=>{
-        axios.get('/users')
+        axios.get(`/users/${email}`)
         .then(res => {
-            setData(res.data[0])
+            setUser(res.data)
         })
     },[])
 
+    if(user){
+        localStorage.setItem("dbUser",JSON.stringify(user));
+    }
+
     useEffect(() => {
-        axios.get('/users')
-            .then(res => {
-                setLists(res.data[0].lists)
-            })
+        if(user){
+            axios.get(`/users/lists/${email}`)
+                .then(res => setLists(res.data))
+        }
+        
     }, [])
-
-
-
-    
 
     const addMoreCard = (title, index) => {
 
@@ -74,9 +75,16 @@ const Home = () => {
             cards: reqList.cards
         }
 
-        let allLists = [...lists];
+        const allLists = [...lists];
         allLists[index] = modList;
         setLists(allLists)
+
+        console.log("Card List",allLists)
+
+        const data = {lists : allLists};
+
+
+        axios.put(`http://localhost:5000/api/upload/card/${user._id}`, data)
     }
 
 
@@ -94,9 +102,17 @@ const Home = () => {
             cards: []
         }
 
+        const allLists = [...lists,newList];
+
         // List is an array
 
         setLists(list => [...list,newList])
+
+        console.log("New Lists",allLists)
+
+        const data ={lists: allLists}
+
+        axios.put(`http://localhost:5000/api/upload/list/${user._id}`, data)
     }
 
     const onDragEnd = (result) => {
