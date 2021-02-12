@@ -54,12 +54,9 @@ const Home = ({ USER }) => {
 
 
     const addMoreCard = (title, index) => {
-
-        const newCardId = uuid();
         const date = new Date();
         
         const newCard = {
-            id: newCardId,
             date: `${date.getDate()} ${date.toLocaleString('default', { month: 'short' })}, ${date.getFullYear()}`,
             content: 'Add your content here..',
             title: title,
@@ -81,6 +78,20 @@ const Home = ({ USER }) => {
             setLists(newData.lists)
         })
 
+    }
+
+    const updateCardContent = (content, listIndex, cardIndex) => {
+
+        lists[listIndex].cards[cardIndex].content = content;
+        let allLists = [...lists];
+        
+        setLists(allLists)
+        axios.put(`/upload/card/${user._id}`, { lists: allLists })
+        socket.once('list-updated', newData => {
+            setLists(newData.lists)
+        })
+
+        console.log(allLists)
     }
 
 
@@ -179,7 +190,7 @@ const Home = ({ USER }) => {
 
     return (
 
-        <StoredApi.Provider value={{ addMoreCard, addMoreList, updateListTitle, removeList }}>
+        <StoredApi.Provider value={{ addMoreCard, addMoreList, updateListTitle, removeList, updateCardContent }}>
             <DragDropContext onDragEnd={onDragEnd}>
 
                 <Droppable droppableId='list' type='list' direction='horizontal'>

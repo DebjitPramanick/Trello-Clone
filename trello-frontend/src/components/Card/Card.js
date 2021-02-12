@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Paper, InputBase, Typography } from "@material-ui/core";
 import { makeStyles, fade } from "@material-ui/core/styles";
 
 import CancelIcon from '@material-ui/icons/Cancel';
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import StoredAPI from "../../utils/StoredAPI";
 
 const useStyles = makeStyles(theme => ({
     card: {
@@ -59,8 +60,10 @@ const useStyles = makeStyles(theme => ({
 
 }))
 
-const Card = ({ card, index }) => {
+const Card = ({ card, cardIndex, listIndex }) => {
 
+
+    const { updateCardContent } = useContext(StoredAPI)
     const classes = useStyles()
 
     const [popup, setPopup] = useState(false);
@@ -74,10 +77,11 @@ const Card = ({ card, index }) => {
 
     console.log(card.date)
     const handleOnDone = () => {
+        updateCardContent(content, listIndex, cardIndex)
         setOpen(!open);
     }
 
-    console.log(content)
+
 
 
 
@@ -116,7 +120,7 @@ const Card = ({ card, index }) => {
 
             )}
 
-            <Draggable draggableId={card._id} index={index}>
+            <Draggable draggableId={card._id} index={cardIndex}>
                 {(provided) => (
                     <div
                         ref={provided.innerRef} {...provided.dragHandleProps}

@@ -50,8 +50,9 @@ const List = ({ list, index }) => {
                                     className={classes.cardContainer}
                                 >
                                     {
-                                        list.cards && list.cards.map((card, index) => (
-                                            <Card key={card._id} card={card} index={index}/>
+                                        list.cards && list.cards.map((card, i) => (
+                                            <Card key={card._id} card={card} cardIndex={i}
+                                            listIndex={index}/>
                                         ))
                                     }
                                     {provided.placeholder}
