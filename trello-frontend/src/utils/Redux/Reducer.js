@@ -1,5 +1,5 @@
 
-const user = JSON.parse(localStorage.getItem('trelloUser'));
+const user = JSON.parse(localStorage.getItem('DBUSER'));
 
 export const initialState = {
     user: user,
@@ -13,7 +13,7 @@ const reducer = (state, action) => {
 
     switch (action.type) {
         case actionTypes.SET_USER:
-            localStorage.setItem('trelloUser',JSON.stringify(action.user));
+            localStorage.setItem('DBUSER', JSON.stringify(action.user));
             return {
                 ...state,
                 user: action.user,

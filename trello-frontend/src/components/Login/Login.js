@@ -7,6 +7,13 @@ import axios from "../../utils/Axios"
 import { useStateValue } from '../../utils/Redux/StateProvider'
 import { actionTypes } from '../../utils/Redux/Reducer'
 
+
+import io from 'socket.io-client'
+
+
+const socket = io.connect('http://localhost:3000');
+
+
 const useStyles = makeStyles(theme => ({
     root: {
         height: '100vh',
@@ -49,7 +56,11 @@ const Login = ({ setUser }) => {
 
 
     const [{ }, dispatch] = useStateValue();
+    const [details, setDetails] = useState()
     const classes = useStyles();
+    const defaultUrl = "https://i.pinimg.com/originals/47/0a/19/470a19a36904fe200610cc1f41eb00d9.jpg"
+
+
 
     const signIn = () => {
         auth.signInWithPopup(provider)
@@ -57,44 +68,76 @@ const Login = ({ setUser }) => {
 
                 let email = res.user.email;
 
-                axios.get(`/users/${email}`)
+                axios.get(`/user/${email}`)
                     .then(response => {
-                        if(email === response.data.email){
-                            dispatch({
-                                type: actionTypes.SET_USER,
-                                user: res.user,
-                            })
-                            setUser(true);
-                        }
-                        else{
-                            const data = {
-                                name: res.user.displayName,
-                                email: res.user.email,
-                                lists: []
+                        if (email === response.data.email) {
+
+                            const userData = {
+                                _id: response.data._id,
+                                name: response.data.name,
+                                email: response.data.email,
+                                photo: res.user.photoURL
                             }
 
                             dispatch({
                                 type: actionTypes.SET_USER,
-                                user: res.user,
+                                user: userData,
                             })
-                            setUser(true);
+                            setUser(userData)
+                        }
+
+
+                        else {
+                            const data = {
+                                name: res.user.displayName,
+                                email: res.user.email,
+                                lists: [],
+                                background: defaultUrl,
+                                photo: res.user.photoURL
+                            }
+
                             axios.post("/upload/user", data)
+                            setDetails(true)
+                            socket.once('user-registered', newData => {
+                                console.log(newData)
+                            })
+                            
                         }
                     })
             })
             .catch((error) => alert(error.message))
     }
 
+
+    const handleContinue = () => {
+
+        dispatch({
+            type: actionTypes.SET_USER,
+            user: details,
+        })
+        setUser(details)
+    }
+
     return (
         <div className={classes.root}>
+
             <div className={classes.loginBox}>
                 <img src="https://cdn1.iconfinder.com/data/icons/designer-skills/128/trello-512.png" alt=""
                     className={classes.image} />
                 Welcome to Trello clone
-                <Button className={classes.btn}
-                    onClick={signIn}>
-                    Signin with Google
-                </Button>
+
+                {!details ? (
+                    <Button className={classes.btn}
+                        onClick={signIn}>
+                        Signin with Google
+                    </Button>
+                ) : (
+                        <Button className={classes.btn}
+                            onClick={handleContinue}>
+                            Let's Start
+                        </Button>
+                    )}
+
             </div>
         </div>
     )

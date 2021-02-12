@@ -11,7 +11,9 @@ router.post(
         const data = {
             name: req.body.name,
             email: req.body.email,
-            lists: req.body.lists
+            lists: req.body.lists,
+            background: req.body.background,
+            photo: req.body.photo
         }
         const user = new UserModel(data);
         try {
@@ -59,8 +61,6 @@ router.put(
     }
 )
 
-
-
 router.put(
     '/upload/bg/:id',
     async (req, res) => {
@@ -96,7 +96,7 @@ router.get(
 
 
 router.get(
-    '/users/:email',
+    '/user/:email',
     async (req, res) => {
 
         const email = req.params.email;
@@ -109,13 +109,13 @@ router.get(
 
 
 router.get(
-    '/users/lists/:email',
+    '/user/bg/:email',
     async (req, res) => {
 
         const email = req.params.email;
 
         UserModel.find({ email }, (error, result) => {
-            if (!error) res.send(result[0].lists)
+            if (!error) res.send(result[0])
         })
     }
 )

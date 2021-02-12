@@ -1,0 +1,19 @@
+.closeBtn{
+    font-size: 22px;
+    margin-right: 8px;
+    color: grey;
+    cursor: pointer;
+}
+
+.done-btn{
+    outline: 0;
+    border: 0;
+    background-color: rgb(0, 187, 125);
+    border-radius: 2px;
+    color: white;
+    padding: 6px 10px;
+    font-size: 16px;
+    margin-top: 8px;
+    cursor: pointer;
+}
+

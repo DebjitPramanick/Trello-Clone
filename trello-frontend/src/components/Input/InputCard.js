@@ -13,10 +13,10 @@ const useStyles = makeStyles(theme => ({
         margin: theme.spacing(1)
     },
     btnConfirm: {
-        backgroundColor: '#145DA0',
+        backgroundColor: '#00bb7d',
         color: '#fff',
         '&:hover': {
-            backgroundColor: '#0C2D48'
+            backgroundColor: '#00bb7d'
         },
         cursor: 'pointer'
     },

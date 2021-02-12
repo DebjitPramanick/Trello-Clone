@@ -1,9 +1,8 @@
 import React, { useState, useContext } from "react";
 import { Typography, InputBase } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import StoredAPI from "../../utils/StoredAPI";
-
+import CancelIcon from '@material-ui/icons/Cancel';
 
 const useStyles = makeStyles(theme => ({
     editableTitleContainer: {
@@ -21,7 +20,7 @@ const useStyles = makeStyles(theme => ({
         "&:focus": {
             backgroundColor: '#ddd'
         },
-    }
+    },
 }))
 
 
@@ -29,7 +28,7 @@ const Title = ({title, index}) => {
     const [open, setOpen] = useState(false);
     const classes = useStyles();
 
-    const {updateListTitle} = useContext(StoredAPI);
+    const {updateListTitle, removeList} = useContext(StoredAPI);
 
     const [newTitle, setNewTitle] = useState(title)
 
@@ -57,7 +56,8 @@ const Title = ({title, index}) => {
                         <Typography className={classes.editableTitle}
                         onClick={() => setOpen(!open)}>{newTitle}</Typography>
 
-                        <MoreHorizIcon />
+                        <CancelIcon className='closeBtn'
+                        onClick={() => removeList(index)}/>
                     </div>
                 )}
         </div>

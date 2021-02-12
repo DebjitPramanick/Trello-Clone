@@ -10,6 +10,11 @@ import axios from "../utils/Axios"
 
 import { DragDropContext, Droppable} from "react-beautiful-dnd";
 
+import io from 'socket.io-client'
+import { updateCards, updateLists } from '../utils/Functions/allFunctions'
+
+const socket = io.connect('http://localhost:3000');
+
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -28,33 +33,25 @@ const useStyles = makeStyles(theme => ({
 
 
 
-const Home = () => {
+const Home = ({ USER }) => {
 
     const classes = useStyles();
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState(USER)
     const [lists, setLists] = useState([])
     const [listIDs, setListIDs] = useState([])
 
-    const email = JSON.parse(localStorage.getItem('trelloUser')).email;
-
-    useEffect(()=>{
-        axios.get(`/users/${email}`)
-        .then(res => {
-            setUser(res.data)
-        })
-    },[])
-
-    if(user){
-        localStorage.setItem("dbUser",JSON.stringify(user));
-    }
+    const email = JSON.parse(localStorage.getItem('DBUSER')).email;
+    console.log(email)
 
     useEffect(() => {
-        if(user){
-            axios.get(`/users/lists/${email}`)
-                .then(res => setLists(res.data))
-        }
-        
+        axios.get(`/user/${email}`)
+        .then(res => {
+            setLists(res.data.lists)
+        })
     }, [])
+
+    console.log(lists)
+
 
     const addMoreCard = (title, index) => {
 
@@ -64,6 +61,7 @@ const Home = () => {
         const newCard = {
             id: newCardId,
             date: `${date.getDate()} ${date.toLocaleString('default', { month: 'short' })}, ${date.getFullYear()}`,
+            content: 'Add your content here..',
             title: title,
         }
 
@@ -78,19 +76,32 @@ const Home = () => {
         const allLists = [...lists];
         allLists[index] = modList;
         setLists(allLists)
+        axios.put(`/upload/card/${user._id}`, { lists: allLists })
+        socket.once('list-updated', newData => {
+            setLists(newData.lists)
+        })
 
-        console.log("Card List",allLists)
-
-        const data = {lists : allLists};
-
-
-        axios.put(`http://localhost:5000/api/upload/card/${user._id}`, data)
     }
 
 
     const updateListTitle = (title, index) => {
         const list = lists[index];
         list.title = title;
+        const allLists = [...lists];
+        axios.put(`/upload/list/${user._id}`, { lists: allLists })
+        socket.once('list-updated', newData => {
+            setLists(newData.lists)
+        })
+    }
+
+    const removeList = (index) =>{
+        const allLists = [...lists];
+        allLists.splice(index,1);
+        setLists(allLists);
+        axios.put(`/upload/list/${user._id}`, { lists: allLists })
+        socket.once('list-updated', newData => {
+            setLists(newData.lists)
+        })
     }
 
 
@@ -107,12 +118,10 @@ const Home = () => {
         // List is an array
 
         setLists(list => [...list,newList])
-
-        console.log("New Lists",allLists)
-
-        const data ={lists: allLists}
-
-        axios.put(`http://localhost:5000/api/upload/list/${user._id}`, data)
+        axios.put(`/upload/list/${user._id}`, { lists: allLists })
+        socket.once('list-updated', newData => {
+            setLists(newData.lists)
+        })
     }
 
     const onDragEnd = (result) => {
@@ -170,7 +179,7 @@ const Home = () => {
 
     return (
 
-        <StoredApi.Provider value={{ addMoreCard, addMoreList, updateListTitle }}>
+        <StoredApi.Provider value={{ addMoreCard, addMoreList, updateListTitle, removeList }}>
             <DragDropContext onDragEnd={onDragEnd}>
 
                 <Droppable droppableId='list' type='list' direction='horizontal'>

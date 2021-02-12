@@ -7,6 +7,7 @@ import colors from '../../utils/Colors';
 import { getImages } from '../../utils/ImageApi';
 
 import StoredApi from '../../utils/StoredAPI'
+import axios from "../../utils/Axios";
 
 const useStyles = makeStyles(theme => ({
     drawer: {
@@ -56,6 +57,8 @@ const Sidebar = ({ openMenu, setOpenMenu }) => {
 
 
     const sendBG = (bg) => {
+        const id = JSON.parse(localStorage.getItem('DBUSER'))._id;
+        axios.put(`/upload/bg/${id}`, { background: bg })
         changeBG(bg);
     }
 

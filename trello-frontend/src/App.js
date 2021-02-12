@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Home from './components/Home'
 import { makeStyles, fade } from "@material-ui/core/styles";
 import Navbars from './components/NavBar/Navbars';
@@ -22,18 +22,19 @@ const useStyles = makeStyles(theme => ({
 
 
 const App = () => {
-
-    const trelloUser = JSON.parse(localStorage.getItem('trelloUser'));
-    const background = JSON.parse(localStorage.getItem('background'));
-
-    const [user, setUser] = useState(trelloUser)
-
-
     const classes = useStyles();
-
-    const [bg, setBg] = useState(background);
+    const trelloUser = JSON.parse(localStorage.getItem('DBUSER'));
+    const [user, setUser] = useState(trelloUser)
+    const [bg, setBg] = useState();
     const [loader, setLoader] = useState(false);
 
+
+    useEffect(() => {
+        axios.get(`/user/bg/${user.email}`)
+            .then(res => {
+                setBg(res.data.background)
+            })
+    }, [])
 
     const changeBG = (url) => {
         setLoader(true);
@@ -41,41 +42,59 @@ const App = () => {
         setTimeout(() => {
             setLoader(false)
         }, 3000)
-
-        const data ={background: url}
-
-        axios.put(`/upload/bg/:id`,data)
-
     }
 
+    
 
     return (
-
-
         <div>
 
-            {!user ? <Login setUser={setUser}/>
-            : (
+            {!user ? <Login setUser={setUser} />
+                : (
                     <StoredApi.Provider value={{ changeBG }}>
-
 
                         {loader && <Loader />}
 
-                        <div className={classes.root}
-                            style={{
-                                backgroundColor: `${bg}`,
-                                backgroundImage: `url(${bg})`,
-                            }}
-                        >
-                            <Navbars />
-                            <Home />
-                        </div>
+                        {user ? (
+                            <div className={classes.root}
+                                style={{
+                                    backgroundColor: `${bg}`,
+                                    backgroundImage: `url(${bg})`,
+                                }}
+                            >
+                                <Navbars />
+                                <Home USER={user}/>
+                            </div>
+
+                        ) : (user && bg) ? (
+                            <div className={classes.root}
+                                style={{
+                                    backgroundColor: `${bg}`,
+                                    backgroundImage: `url(${bg})`,
+                                }}
+                            >
+                                <Navbars />
+                                <Home USER={user}/>
+                            </div>
+                        ) : (
+                            <div className={classes.root}
+                                style={{
+                                    backgroundColor: "#ffffff",
+                                    backgroundImage: "#ffffff",
+                                }}
+                            >
+                                <Navbars />
+                                <Home USER={user}/>
+                            </div>
+                        )}
+
+                        
                     </StoredApi.Provider>
-            )}
+                )}
 
 
 
-            
+
 
 
         </div>

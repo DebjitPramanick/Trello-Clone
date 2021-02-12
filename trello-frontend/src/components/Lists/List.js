@@ -1,7 +1,9 @@
 import React, {useState} from 'react'
+import "./Title.css"
 
 import { Paper, CssBaseline } from "@material-ui/core";
 import { makeStyles,fade } from "@material-ui/core/styles";
+
 import Title from './Title';
 import Card from '../Card/Card';
 import InputConainer from '../Input/InputConainer';
@@ -40,7 +42,6 @@ const List = ({ list, index }) => {
                     <Paper className={classes.root}>
                         <CssBaseline />
                         <Title title={list.title} index={index} />
-
 
                         <Droppable droppableId={list._id}>
                             {(provided) => (

@@ -9,12 +9,13 @@ const UserSchema = new mongoose.Schema({
             cards: [{
                 title: {type: String},
                 content: {type: String},
-                dateAdded: {type: String}
+                date: {type: String}
                 },
             ],
         },
     ],
-    background: {type: String}
+    background: {type: String},
+    photo: {type: String}
 })
 
 const UserModel = mongoose.model("userModel",UserSchema);

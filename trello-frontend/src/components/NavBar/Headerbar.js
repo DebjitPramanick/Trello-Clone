@@ -18,13 +18,12 @@ const useStyles = makeStyles(theme => ({
     },
     btn: {
         color: 'white',
-        backgroundColor: '#145DA0',
+        backgroundColor: '#00bb7d',
         color: '#fff',
         '&:hover': {
             backgroundColor: '#0C2D48'
         },
         cursor: 'pointer',
-        border: '1px solid white',
         fontSize: '12px',
         height: '36px'
     }
@@ -39,15 +38,16 @@ const Headerbar = ({ setOpenMenu }) => {
 
 
     const logOut = () =>{
-        localStorage.removeItem('trelloUser'); 
+        localStorage.removeItem('DBUSER');
+        localStorage.removeItem('FIREBASEUSER'); 
         window.location.reload(true);
     }
 
     return (
         <div className='headerContainer'>
             <div className="display">
-                <Avatar src={user.photoURL} />
-                <h3>{user.displayName} - Dashboard</h3>
+                <Avatar src={user.photo} />
+                <h3>{user.name} - Dashboard</h3>
             </div>
 
 
