@@ -7,7 +7,7 @@ import StoredAPI from '../../utils/StoredAPI';
 const useStyles = makeStyles(theme => ({
     card: {
         margin: theme.spacing(0, 1, 1, 1),
-        paddingBottom: theme.spacing(4)
+        paddingBottom: theme.spacing(4),
     },
     input: {
         margin: theme.spacing(1)

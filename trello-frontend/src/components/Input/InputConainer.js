@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
         cursor: 'pointer'
     },
     addCard: {
-        padding: theme.spacing(1, 1, 1, 2),
+        padding: theme.spacing(1, 1, 1, 1),
         margin: theme.spacing(0, 1, 1, 1),
         backgroundColor: '#EBECF0',
         '&:hover': {

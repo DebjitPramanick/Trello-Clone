@@ -29,7 +29,7 @@ mongoose.connect(connectionURL, {
 
 const socketIo = new io.Server(server, {
     cors: {
-        origin: "http://localhost:3000",
+        origin: "https://trello-clone-42d24.web.app",
         credentials: true
     }
 });

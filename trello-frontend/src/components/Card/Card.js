@@ -10,7 +10,7 @@ import StoredAPI from "../../utils/StoredAPI";
 const useStyles = makeStyles(theme => ({
     card: {
         maxWidth: '300px',
-        padding: theme.spacing(1, 1, 1, 2),
+        padding: theme.spacing(1, 1, 1, 1),
         margin: theme.spacing(1),
         cursor: 'pointer'
     },
@@ -35,7 +35,8 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(4),
         position: 'relative',
         cursor: 'auto',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        zIndex: '99999'
     },
     cancel: {
         cursor: 'pointer',
