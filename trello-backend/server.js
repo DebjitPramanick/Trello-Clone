@@ -51,18 +51,15 @@ connection.once('open', () => {
     changeStream.on('change', (change) => {
         switch (change.operationType) {
             case 'insert':
-                const user = {
+                const newUser = {
                     _id: change.fullDocument._id,
                     name: change.fullDocument.name,
                     email: change.fullDocument.email,
-                    photo: change.fullDocument.photo
+                    photo: change.fullDocument.photo,
+                    oldBG: change.fullDocument.background
                 }
-                console.log(user)
-                socketIo.emit('user-registered', user)
-                break;
-
-            case 'delete':
-                socketIo.emit('user-deleted', change.documentKey._id)
+                console.log(newUser)
+                socketIo.emit('user-signed', newUser)
                 break;
 
             case 'update':
@@ -73,7 +70,6 @@ connection.once('open', () => {
                     lists: change.fullDocument.lists,
                     background: change.fullDocument.background
                 }
-                socketIo.emit('user-updated', updatedUser)
                 socketIo.emit('list-updated', updatedUser.lists)
                 break;
         }

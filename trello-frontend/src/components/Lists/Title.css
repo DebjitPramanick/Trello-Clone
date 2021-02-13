@@ -1,6 +1,6 @@
 .closeBtn{
     font-size: 22px;
-    margin-right: 8px;
+    margin-right: 6px;
     color: grey;
     cursor: pointer;
 }
@@ -32,6 +32,5 @@
     left: 0;
     color: white;
     cursor: pointer;
-    background-color: rgba(0, 0, 0, 0.596);
 }
 

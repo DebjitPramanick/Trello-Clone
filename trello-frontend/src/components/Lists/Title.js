@@ -13,6 +13,7 @@ const useStyles = makeStyles(theme => ({
     editableTitle: {
         flexGrow: '1',
         maxWidth: '300px',
+        fontWeight: '600'
     },
     input: {
         maxWidth: '300px',
@@ -24,17 +25,23 @@ const useStyles = makeStyles(theme => ({
 }))
 
 
-const Title = ({title, index}) => {
+const Title = ({ title, index }) => {
     const [open, setOpen] = useState(false);
     const classes = useStyles();
 
-    const {updateListTitle, removeList} = useContext(StoredAPI);
+    const { updateListTitle, removeList } = useContext(StoredAPI);
 
     const [newTitle, setNewTitle] = useState(title)
 
-    const handleOnBlur = () =>{
-        updateListTitle(newTitle, index)
-        setOpen(!open);
+    const handleOnBlur = () => {
+        if (newTitle.length>=3 && newTitle.length<=20) {
+            updateListTitle(newTitle, index)
+            setOpen(!open);
+        }
+
+        else {
+            alert("Please enter title within 3 to 20 characters.")
+        }
     }
 
     return (
@@ -42,22 +49,22 @@ const Title = ({title, index}) => {
             {open ? (
                 <div>
                     <InputBase value={newTitle}
-                    autoFocus
-                    inputProps ={{
-                        className: classes.input
-                    }}
-                    fullWidth
-                    onChange={(e) => setNewTitle(e.target.value)}
-                    onBlur = {handleOnBlur} />
+                        autoFocus
+                        inputProps={{
+                            className: classes.input
+                        }}
+                        fullWidth
+                        onChange={(e) => setNewTitle(e.target.value)}
+                        onBlur={handleOnBlur} />
                 </div>
             ) : (
                     <div className={classes.editableTitleContainer}>
 
                         <Typography className={classes.editableTitle}
-                        onClick={() => setOpen(!open)}>{newTitle}</Typography>
+                            onClick={() => setOpen(!open)}>{newTitle}</Typography>
 
                         <CancelIcon className='closeBtn'
-                        onClick={() => removeList(index)}/>
+                            onClick={() => removeList(index)} />
                     </div>
                 )}
         </div>

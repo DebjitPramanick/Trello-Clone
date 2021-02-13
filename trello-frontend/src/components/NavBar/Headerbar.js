@@ -44,29 +44,43 @@ const Headerbar = ({ setOpenMenu }) => {
     }
 
     return (
-        <div className='headerContainer'>
-            <div className="display">
-                <Avatar src={user.photo} />
-                <h3>{user.name} - Dashboard</h3>
-            </div>
-
-
-            <div className="btn-container">
-
-                <Button className={classes.btn}
+        <div>
+            <div className="bottom-bar">
+                <button
                     onClick={logOut}>
+                    <ExitToAppIcon />
+                </button>
+
+                <button
+                    onClick={() => setOpenMenu(true)}>
+                    <InsertPhotoIcon />
+                </button>
+            </div>
+            <div className='headerContainer'>
+                <div className="display">
+                    <Avatar src={user.photo} />
+                    <h3>{user.name} - Dashboard</h3>
+                </div>
+
+
+                <div className="btn-container">
+
+                    <Button className={classes.btn}
+                        onClick={logOut}>
                         <ExitToAppIcon />
                         Log Out
-                </Button>
+                    </Button>
 
-                <Button className={classes.btn}
-                    onClick={() => setOpenMenu(true)}>
+                    <Button className={classes.btn}
+                        onClick={() => setOpenMenu(true)}>
                         <InsertPhotoIcon />
                         Change Background
-                </Button>
+                    </Button>
 
+                </div>
             </div>
         </div>
+        
     )
 }
 

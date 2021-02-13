@@ -3,15 +3,15 @@ import { makeStyles, fade } from "@material-ui/core/styles";
 import { Button, IconButton } from "@material-ui/core";
 import { auth, provider } from "../../utils/Firebase"
 import axios from "../../utils/Axios"
+import io from 'socket.io-client'
 
 import { useStateValue } from '../../utils/Redux/StateProvider'
 import { actionTypes } from '../../utils/Redux/Reducer'
 
 
-import io from 'socket.io-client'
 
 
-const socket = io.connect('http://localhost:3000');
+const clientSocket = io('http://localhost:8080/');
 
 
 const useStyles = makeStyles(theme => ({
@@ -57,14 +57,20 @@ const useStyles = makeStyles(theme => ({
 
 
 
-const Login = ({ setUser }) => {
+const Login = ({ setUser, setBg }) => {
 
+    clientSocket.on('connect', () => {
+        console.log('Client connected.');
+    });
 
     const [{ }, dispatch] = useStateValue();
     const [details, setDetails] = useState()
+    const [data, setData] = useState({});
+    const [registered, setRegistered] = useState(true)
     const classes = useStyles();
     const defaultUrl = "https://i.pinimg.com/originals/47/0a/19/470a19a36904fe200610cc1f41eb00d9.jpg"
 
+    
 
 
     const signIn = () => {
@@ -81,8 +87,11 @@ const Login = ({ setUser }) => {
                                 _id: response.data._id,
                                 name: response.data.name,
                                 email: response.data.email,
-                                photo: res.user.photoURL
+                                photo: res.user.photoURL,
+                                oldBG: response.data.background
                             }
+
+                            setBg(userData.oldBG)
 
                             dispatch({
                                 type: actionTypes.SET_USER,
@@ -93,34 +102,35 @@ const Login = ({ setUser }) => {
 
 
                         else {
-                            const data = {
+                            const dataObject = {
                                 name: res.user.displayName,
                                 email: res.user.email,
                                 lists: [],
                                 background: defaultUrl,
                                 photo: res.user.photoURL
                             }
-
-                            axios.post("/upload/user", data)
-                            setDetails(true)
-                            socket.once('user-registered', newData => {
-                                console.log(newData)
-                            })
-                            
+                            setData(dataObject);
+                            setRegistered(false)
                         }
                     })
             })
             .catch((error) => alert(error.message))
     }
 
-
     const handleContinue = () => {
 
-        dispatch({
-            type: actionTypes.SET_USER,
-            user: details,
+        axios.post("/upload/user", data);
+        console.log("Uploaded user....no socket io")
+        clientSocket.once('user-signed', (userData) => {
+            dispatch({
+                type: actionTypes.SET_USER,
+                user: userData,
+            })
+            setBg(userData.oldBG)
+            setUser(userData)
         })
-        setUser(details)
+
+        
     }
 
     return (
@@ -129,9 +139,9 @@ const Login = ({ setUser }) => {
             <div className={classes.loginBox}>
                 <img src="https://cdn0.iconfinder.com/data/icons/navigation-elements-1/512/green-app-grid-menu-tile-choice-app-512.png" alt=""
                     className={classes.image} />
-                <p style={{color: 'white'}}>Welcome to Trello clone</p>
+                <p style={{ color: 'white' }}>Welcome to Trello clone</p>
 
-                {!details ? (
+                {registered ? (
                     <Button className={classes.btn}
                         onClick={signIn}>
                         Signin with Google

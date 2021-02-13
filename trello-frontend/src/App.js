@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         display: 'flex',
-        flexDirection: "column"
+        flexDirection: "column",
     },
 }))
 
@@ -31,12 +31,11 @@ const App = () => {
 
     useEffect(() => {
         if(user){
-            axios.get(`/user/bg/${user.email}`)
-                .then(res => {
-                    setBg(res.data.background)
-                })
+          axios.get(`/user/bg/${user.email}`)
+            .then(res => {
+                setBg(res.data.background)
+            })  
         }
-        
     }, [])
 
     const changeBG = (url) => {
@@ -47,12 +46,11 @@ const App = () => {
         }, 3000)
     }
 
-    
+
 
     return (
         <div>
-
-            {!user ? <Login setUser={setUser} />
+            {!user ? <Login setUser={setUser} setBg={setBg} />
                 : (
                     <StoredApi.Provider value={{ changeBG }}>
 

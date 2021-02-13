@@ -59,8 +59,13 @@ const useStyles = makeStyles(theme => ({
         flexGrow: '1',
         color: 'grey',
         marginTop: theme.spacing(4),
-        fontSize: '14px'
+        fontSize: '14px',
     },
+    small: {
+        fontSize: '12px',
+        color: 'grey',
+        marginTop: theme.spacing(1)
+    }
 
 }))
 
@@ -88,9 +93,6 @@ const Card = ({ card, cardIndex, listIndex }) => {
         removeCard(listIndex, cardIndex);
         setPopup(false)
     }
-
-
-
 
 
     return (
@@ -140,7 +142,11 @@ const Card = ({ card, cardIndex, listIndex }) => {
                         {...provided.draggableProps}
                         onClick={() => setPopup(true)}
                     >
-                        <Paper className={classes.card}>{card.title}</Paper>
+                        <Paper className={classes.card}>
+                            <h4 style={{ color: '#696969'}}>{card.title}</h4>
+                            <p className={classes.small}>{content}</p>
+                        </Paper>
+                        
                     </div>
                 )}
 

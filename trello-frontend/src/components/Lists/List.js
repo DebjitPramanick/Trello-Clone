@@ -14,6 +14,8 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 const useStyles = makeStyles(theme => ({
     root: {
         minWidth: '300px',
+        maxHeight: '76vh',
+        overflowY: 'scroll',
         backgroundColor: '#EBECF0',
         marginLeft: theme.spacing(1),
         marginTop: theme.spacing(1),

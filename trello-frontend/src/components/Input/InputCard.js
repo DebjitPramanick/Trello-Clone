@@ -33,10 +33,13 @@ const InputCard = ({ setOpen, listID, index, type }) => {
     const { addMoreCard, addMoreList } = useContext(StoredAPI)
 
     const confirmAddCard = () => {
-        if(title){
+        if(title.length <= 20 && title.length >= 3){
             addMoreCard(title, index);
             setOpen(false)
             setTitle('')
+        }
+        else{
+            alert("Please enter title within 3 to 20 characters.")
         }
     }
 
@@ -49,10 +52,7 @@ const InputCard = ({ setOpen, listID, index, type }) => {
             setOpen(false)
             setTitle('')
         }
-        
     }
-
-
 
     return (
         <div>

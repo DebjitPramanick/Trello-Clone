@@ -13,7 +13,7 @@ import { DragDropContext, Droppable} from "react-beautiful-dnd";
 import io from 'socket.io-client'
 import { updateCards, updateLists } from '../utils/Functions/allFunctions'
 
-const socket = io.connect('http://localhost:3000');
+const socket = io('http://localhost:8080/');
 
 
 const useStyles = makeStyles(theme => ({
@@ -33,18 +33,16 @@ const useStyles = makeStyles(theme => ({
 
 
 
-const Home = ({ USER }) => {
+const Home = () => {
 
     const classes = useStyles();
-    const [user, setUser] = useState(USER)
     const [lists, setLists] = useState([])
     const [listIDs, setListIDs] = useState([])
 
-    const email = JSON.parse(localStorage.getItem('DBUSER')).email;
-    console.log(email)
+    const user = JSON.parse(localStorage.getItem('DBUSER'));
 
     useEffect(() => {
-        axios.get(`/user/${email}`)
+        axios.get(`/user/${user.email}`)
         .then(res => {
             setLists(res.data.lists)
         })
@@ -69,10 +67,9 @@ const Home = ({ USER }) => {
 
         const allLists = [...lists];
         allLists[index] = modList;
-        setLists(allLists)
         axios.put(`/upload/card/${user._id}`, { lists: allLists })
         socket.once('list-updated', newData => {
-            setLists(newData.lists)
+            setLists(newData)
         })
 
     }
@@ -82,13 +79,10 @@ const Home = ({ USER }) => {
         lists[listIndex].cards[cardIndex].content = content;
         let allLists = [...lists];
         
-        setLists(allLists)
         axios.put(`/upload/card/${user._id}`, { lists: allLists })
         socket.once('list-updated', newData => {
-            setLists(newData.lists)
+            setLists(newData)
         })
-
-        console.log(allLists)
     }
 
 
@@ -97,10 +91,9 @@ const Home = ({ USER }) => {
         allCards.splice(cardIndex,1);
         lists[listIndex].cards = allCards;
         const allLists = [...lists];
-        setLists(allLists);
         axios.put(`/upload/list/${user._id}`, { lists: allLists })
         socket.once('list-updated', newData => {
-            setLists(newData.lists)
+            setLists(newData)
         })
     }
 
@@ -111,37 +104,30 @@ const Home = ({ USER }) => {
         const allLists = [...lists];
         axios.put(`/upload/list/${user._id}`, { lists: allLists })
         socket.once('list-updated', newData => {
-            setLists(newData.lists)
+            setLists(newData)
         })
     }
 
     const removeList = (index) =>{
         const allLists = [...lists];
         allLists.splice(index,1);
-        setLists(allLists);
         axios.put(`/upload/list/${user._id}`, { lists: allLists })
         socket.once('list-updated', newData => {
-            setLists(newData.lists)
+            setLists(newData)
         })
     }
 
 
     const addMoreList = (title) => {
-        const newListId = uuid();
         const newList = {
-            id: newListId,
             title: title,
             cards: []
         }
 
         const allLists = [...lists,newList];
-
-        // List is an array
-
-        setLists(list => [...list,newList])
         axios.put(`/upload/list/${user._id}`, { lists: allLists })
         socket.once('list-updated', newData => {
-            setLists(newData.lists)
+            setLists(newData)
         })
     }
 
@@ -158,10 +144,9 @@ const Home = ({ USER }) => {
             lists[source.index] = lists[destination.index];
             lists[destination.index] = tempList;
             const allLists = [...lists]
-            setLists(allLists)
             axios.put(`/upload/card/${user._id}`, { lists: allLists })
             socket.once('list-updated', newData => {
-                setLists(newData.lists)
+                setLists(newData)
             })
             return;
         }
@@ -175,10 +160,9 @@ const Home = ({ USER }) => {
             destinationList.cards.splice(destination.index, 0, draggingCard);
 
             const allLists = [...lists];
-            setLists(allLists)
             axios.put(`/upload/card/${user._id}`, { lists: allLists })
             socket.once('list-updated', newData => {
-                setLists(newData.lists)
+                setLists(newData)
             })
         }
 
@@ -187,10 +171,9 @@ const Home = ({ USER }) => {
             destinationList.cards.splice(destinationList.index, 0, draggingCard);
 
             const allLists = [...lists];
-            setLists(allLists)
             axios.put(`/upload/card/${user._id}`, { lists: allLists })
             socket.once('list-updated', newData => {
-                setLists(newData.lists)
+                setLists(newData)
             })
         }
     }

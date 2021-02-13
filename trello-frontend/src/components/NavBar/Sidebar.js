@@ -57,6 +57,7 @@ const Sidebar = ({ openMenu, setOpenMenu }) => {
 
 
     const sendBG = (bg) => {
+        setOpenMenu(false)
         const id = JSON.parse(localStorage.getItem('DBUSER'))._id;
         axios.put(`/upload/bg/${id}`, { background: bg })
         changeBG(bg);
