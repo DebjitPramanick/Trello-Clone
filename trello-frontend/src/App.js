@@ -30,10 +30,13 @@ const App = () => {
 
 
     useEffect(() => {
-        axios.get(`/user/bg/${user.email}`)
-            .then(res => {
-                setBg(res.data.background)
-            })
+        if(user){
+            axios.get(`/user/bg/${user.email}`)
+                .then(res => {
+                    setBg(res.data.background)
+                })
+        }
+        
     }, [])
 
     const changeBG = (url) => {

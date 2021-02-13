@@ -216,11 +216,7 @@ const Home = ({ USER }) => {
                             <InputConainer type={'list'} />
                             {provided.placeholder}
                         </div>
-
-
                     )}
-
-
 
                 </Droppable>
 

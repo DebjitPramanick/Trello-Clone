@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, fade } from "@material-ui/core/styles";
 import { Button, IconButton } from "@material-ui/core";
 import { auth, provider } from "../../utils/Firebase"
 import axios from "../../utils/Axios"
@@ -20,7 +20,10 @@ const useStyles = makeStyles(theme => ({
         width: '100vw',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundImage: 'url(https://www.teahub.io/photos/full/96-960665_desktop-wallpaper-laptop-mac-macbook-air-vk55-andro.jpg)',
+        backgroundSize: 'cover'
+
     },
     loginBox: {
         fontFamily: 'Arial',
@@ -28,24 +31,26 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#ededed',
+        backgroundColor: fade('#000', 0.25),
         height: '260px',
         width: '260px',
         padding: theme.spacing(8),
         borderRadius: '8px'
     },
     btn: {
-        backgroundColor: '#007FFF',
+        backgroundColor: '#00bb7d',
         color: 'white',
         padding: theme.spacing(1, 1, 1, 1),
         marginTop: theme.spacing(4),
+        fontSize: '14px',
         '&:hover': {
-            backgroundColor: "#0D4F8B"
+            backgroundColor: "#00bb8e"
         }
     },
     image: {
-        width: '200px',
-        height: '200px'
+        width: '160px',
+        height: '160px',
+        marginBottom: theme.spacing(4)
     }
 
 }))
@@ -122,9 +127,9 @@ const Login = ({ setUser }) => {
         <div className={classes.root}>
 
             <div className={classes.loginBox}>
-                <img src="https://cdn1.iconfinder.com/data/icons/designer-skills/128/trello-512.png" alt=""
+                <img src="https://cdn0.iconfinder.com/data/icons/navigation-elements-1/512/green-app-grid-menu-tile-choice-app-512.png" alt=""
                     className={classes.image} />
-                Welcome to Trello clone
+                <p style={{color: 'white'}}>Welcome to Trello clone</p>
 
                 {!details ? (
                     <Button className={classes.btn}
