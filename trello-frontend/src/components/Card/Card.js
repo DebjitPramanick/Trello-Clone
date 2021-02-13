@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react'
 import { Paper, InputBase, Typography } from "@material-ui/core";
 import { makeStyles, fade } from "@material-ui/core/styles";
 
+import DeleteIcon from '@material-ui/icons/Delete';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import StoredAPI from "../../utils/StoredAPI";
@@ -33,7 +34,8 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: 'white',
         padding: theme.spacing(4),
         position: 'relative',
-        cursor: 'auto'
+        cursor: 'auto',
+        overflow: 'hidden'
     },
     cancel: {
         cursor: 'pointer',
@@ -50,12 +52,14 @@ const useStyles = makeStyles(theme => ({
         "&:focus": {
             backgroundColor: '#ddd'
         },
+        fontSize: '14px'
     },
     editableTitle: {
         maxWidth: '600px',
         flexGrow: '1',
         color: 'grey',
-        marginTop: theme.spacing(4)
+        marginTop: theme.spacing(4),
+        fontSize: '14px'
     },
 
 }))
@@ -63,22 +67,26 @@ const useStyles = makeStyles(theme => ({
 const Card = ({ card, cardIndex, listIndex }) => {
 
 
-    const { updateCardContent } = useContext(StoredAPI)
+    const { updateCardContent, removeCard } = useContext(StoredAPI)
     const classes = useStyles()
 
     const [popup, setPopup] = useState(false);
     const [open, setOpen] = useState(false);
     const [content, setContent] = useState(card.content)
 
-    const showDetails = (card) => {
-        setPopup(true)
-        console.log(card.title)
+    const handleOnDone = () => {
+        if(content.length <= 1060){
+            updateCardContent(content, listIndex, cardIndex)
+            setOpen(!open);
+        }
+        else{
+            alert("Character limit exceeded. Try to add note within 1060 characters.")
+        }
     }
 
-    console.log(card.date)
-    const handleOnDone = () => {
-        updateCardContent(content, listIndex, cardIndex)
-        setOpen(!open);
+    const handleDelete = () =>{
+        removeCard(listIndex, cardIndex);
+        setPopup(false)
     }
 
 
@@ -115,6 +123,11 @@ const Card = ({ card, cardIndex, listIndex }) => {
 
                                 </div>
                             )}
+
+                        <div className="delete-btn" onClick={handleDelete}>
+                            <DeleteIcon className="mui-btn"/>
+                        </div>
+                        
                     </div>
                 </div>
 
@@ -125,7 +138,7 @@ const Card = ({ card, cardIndex, listIndex }) => {
                     <div
                         ref={provided.innerRef} {...provided.dragHandleProps}
                         {...provided.draggableProps}
-                        onClick={() => showDetails(card)}
+                        onClick={() => setPopup(true)}
                     >
                         <Paper className={classes.card}>{card.title}</Paper>
                     </div>

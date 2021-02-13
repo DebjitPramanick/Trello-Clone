@@ -50,9 +50,6 @@ const Home = ({ USER }) => {
         })
     }, [])
 
-    console.log(lists)
-
-
     const addMoreCard = (title, index) => {
         const date = new Date();
         
@@ -92,6 +89,19 @@ const Home = ({ USER }) => {
         })
 
         console.log(allLists)
+    }
+
+
+    const removeCard = (listIndex, cardIndex) =>{
+        const allCards = lists[listIndex].cards;
+        allCards.splice(cardIndex,1);
+        lists[listIndex].cards = allCards;
+        const allLists = [...lists];
+        setLists(allLists);
+        axios.put(`/upload/list/${user._id}`, { lists: allLists })
+        socket.once('list-updated', newData => {
+            setLists(newData.lists)
+        })
     }
 
 
@@ -142,55 +152,53 @@ const Home = ({ USER }) => {
             return;
         }
 
-        // if(type === 'list') {
-        //     const newListIds = data.listIds;
-        //     newListIds.splice(source.index,1);
-        //     newListIds.splice(destination.index,0, draggableId);
-        //     return;
-        // }
+        if(type === 'list') {
 
-        // const sourceList = data.lists[source.droppableId];
-        // const destinationList = data.lists[destination.droppableId];
-        // const draggingCard = sourceList.cards.filter(
-        //     (card) => card.id === draggableId
-        // )[0]
+            const tempList = lists[source.index];
+            lists[source.index] = lists[destination.index];
+            lists[destination.index] = tempList;
+            const allLists = [...lists]
+            setLists(allLists)
+            axios.put(`/upload/card/${user._id}`, { lists: allLists })
+            socket.once('list-updated', newData => {
+                setLists(newData.lists)
+            })
+            return;
+        }
 
-        // if (source.droppableId === destination.droppableId) {
-        //     sourceList.cards.splice(source.index, 1);
-        //     destinationList.cards.splice(destination.index, 0, draggingCard);
+        const destinationList = lists.find(obj => obj._id == destination.droppableId)
+        const sourceList = lists.find(obj => obj._id == source.droppableId)
+        const draggingCard = sourceList.cards.find(obj => obj._id == draggableId)
 
-        //     const newState = {
-        //         ...data,
-        //         lists: {
-        //             ...data.lists,
-        //             [sourceList.id]: destinationList
-        //         }
-        //     }
+        if (source.droppableId === destination.droppableId) {
+            sourceList.cards.splice(source.index, 1);
+            destinationList.cards.splice(destination.index, 0, draggingCard);
 
-        //     setLists(newState);
-        // }
+            const allLists = [...lists];
+            setLists(allLists)
+            axios.put(`/upload/card/${user._id}`, { lists: allLists })
+            socket.once('list-updated', newData => {
+                setLists(newData.lists)
+            })
+        }
 
-        // else {
-        //     sourceList.cards.splice(source.index, 1);
-        //     destinationList.cards.splice(destinationList.index, 0, draggingCard);
+        else {
+            sourceList.cards.splice(source.index, 1);
+            destinationList.cards.splice(destinationList.index, 0, draggingCard);
 
-        //     const newState = {
-        //         ...data,
-        //         lists: {
-        //             ...data.lists,
-        //             [sourceList.id]: sourceList,
-        //             [destinationList.id]: destinationList,
-        //         }
-        //     }
-
-        //     setLists(newState)
-
-        // }
+            const allLists = [...lists];
+            setLists(allLists)
+            axios.put(`/upload/card/${user._id}`, { lists: allLists })
+            socket.once('list-updated', newData => {
+                setLists(newData.lists)
+            })
+        }
     }
 
     return (
 
-        <StoredApi.Provider value={{ addMoreCard, addMoreList, updateListTitle, removeList, updateCardContent }}>
+        <StoredApi.Provider value={{ addMoreCard, addMoreList, updateListTitle, removeList, 
+            updateCardContent, removeCard }}>
             <DragDropContext onDragEnd={onDragEnd}>
 
                 <Droppable droppableId='list' type='list' direction='horizontal'>
