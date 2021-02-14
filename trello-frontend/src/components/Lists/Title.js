@@ -6,7 +6,6 @@ import CancelIcon from '@material-ui/icons/Cancel';
 
 const useStyles = makeStyles(theme => ({
     editableTitleContainer: {
-        maxWidth: '300px',
         display: 'flex',
         marginLeft: theme.spacing(1),
     },
@@ -63,7 +62,7 @@ const Title = ({ title, index }) => {
                         <Typography className={classes.editableTitle}
                             onClick={() => setOpen(!open)}>{newTitle}</Typography>
 
-                        <CancelIcon className='closeBtn'
+                        <CancelIcon className='removeBtn'
                             onClick={() => removeList(index)} />
                     </div>
                 )}
