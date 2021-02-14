@@ -7,7 +7,6 @@ const useStyles = makeStyles(theme => ({
     root: {
         marginTop: theme.spacing(1),
         minWidth: '300px',
-        maxWidth: '300px',
         cursor: 'pointer'
     },
     addCard: {
