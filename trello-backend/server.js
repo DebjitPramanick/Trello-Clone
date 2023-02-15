@@ -28,7 +28,7 @@ mongoose.connect(connectionURL, {
 
 const socketIo = new io.Server(server, {
     cors: {
-        origin: "https://trello-clone-42d24.web.app",
+        origin: "https://trello-clone-kohl-six.vercel.app/",
         credentials: true
     }
 });
