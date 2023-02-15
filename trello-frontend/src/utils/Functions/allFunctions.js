@@ -1,7 +1,7 @@
 import io from 'socket.io-client'
 import axios from "../Axios"
 
-const socket = io.connect('http://localhost:3000');
+const socket = io.connect('https://trello-clone-kohl-six.vercel.app/');
 
 const updateCards = (id, data) => {
     axios.put(`/upload/card/${id}`, data)
