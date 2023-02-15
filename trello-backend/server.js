@@ -3,7 +3,6 @@ import mongoose from 'mongoose'
 import cors from 'cors'
 import router from "./Routers/Router.js"
 import { createServer } from 'http'
-import config from "./Config/config.js"
 import * as io from 'socket.io'
 
 const app = express();
@@ -17,7 +16,7 @@ app.get('/',(req,res)=>res.send("Server is running......"))
 
 // DB
 
-const connectionURL = config.url
+const connectionURL = process.env.MONGO_URL
 mongoose.connect(connectionURL, {
     useNewUrlParser: true,
     useCreateIndex: true,
