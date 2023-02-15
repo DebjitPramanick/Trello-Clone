@@ -11,7 +11,7 @@ import { actionTypes } from '../../utils/Redux/Reducer'
 
 
 
-const clientSocket = io('https://trello-clone-2021.herokuapp.com/');
+const clientSocket = io('https://trello-be-3lx4.onrender.com');
 
 
 const useStyles = makeStyles(theme => ({

@@ -13,7 +13,7 @@ import { DragDropContext, Droppable} from "react-beautiful-dnd";
 import io from 'socket.io-client'
 import { updateCards, updateLists } from '../utils/Functions/allFunctions'
 
-const socket = io('https://trello-clone-2021.herokuapp.com/');
+const socket = io('https://trello-be-3lx4.onrender.com/');
 
 
 const useStyles = makeStyles(theme => ({
